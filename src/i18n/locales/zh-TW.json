@@ -1,0 +1,10 @@
+{
+ "language": {
+ "label": "介面語言",
+ "zhTW": "繁體中文",
+ "enUS": "English"
+ },
+ "app": {
+ "title": "Grok Draw Studio"
+ }
+}
