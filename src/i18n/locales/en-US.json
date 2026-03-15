@@ -4,7 +4,109 @@
  "zhTW": "繁體中文",
  "enUS": "English"
  },
+ "badge": {
+ "cloudflare": "Cloudflare Ready"
+ },
  "app": {
- "title": "Grok Draw Studio"
+ "title": "Grok Draw Studio",
+ "subtitle": "A Grok-Imagine and OpenAI-compatible image workstation with text-to-image, reference editing, preview, and task reuse."
+ },
+ "hero": {
+ "models": "Models",
+ "jobs": "Jobs",
+ "favorites": "Favorites"
+ },
+ "models": {
+ "grokImagine": {
+ "description": "Standard generation mode for most high-quality outputs."
+ },
+ "grokImagineEdit": {
+ "description": "Reference editing mode. Upload an image to repaint or refine specific areas."
+ },
+ "grokImagineFast": {
+ "description": "Fast generation mode for rapid iterations and sketches."
+ }
+ },
+ "panel": {
+ "create": "Create Panel",
+ "modeEdit": "Reference Edit",
+ "modeText": "Text Generation"
+ },
+ "field": {
+ "model": "Model",
+ "prompt": "Prompt",
+ "promptPlaceholder": "Describe the content, style, lighting, lens, and mood you want to generate or edit",
+ "ratio": "Aspect Ratio",
+ "count": "Count",
+ "uploadRequired": "Upload Reference",
+ "uploadOptional": "Optional Upload",
+ "uploadHintEdit": "Edit mode requires a reference image. Supports PNG / JPG / WebP.",
+ "uploadHintText": "The reference image will be used when switching to an edit model.",
+ "currentFile": "Current file: ",
+ "uploadPlaceholder": "Drag or click to upload"
+ },
+ "actions": {
+ "clearImage": "Clear Reference",
+ "submitting": "Generating...",
+ "submitEdit": "Start Editing",
+ "submitText": "Generate Images",
+ "reuse": "Reuse Parameters",
+ "copyPrompt": "Copy Prompt",
+ "favorite": "Favorite",
+ "unfavorite": "Unfavorite",
+ "clearJobs": "Clear All",
+ "download": "Download",
+ "preview": "Preview",
+ "close": "Close"
+ },
+ "tips": {
+ "title": "Prompt Tips",
+ "subtitle": "Specific descriptions usually lead to more stable results.",
+ "items": [
+ "Subject + scene + style + lighting + lens language gives the most consistent results.",
+ "Fast models are for quick sketches; Edit models are for re-creation.",
+ "OpenAI Images works best with standard data[].url / b64_json responses.",
+ "Click to preview. Cards support favorite, prompt copy, and reuse."
+ ],
+ "currentModel": "Current model"
+ },
+ "gallery": {
+ "badge": "Gallery",
+ "title": "Results",
+ "summary": "Generated {count} images",
+ "emptyTitle": "No results yet",
+ "emptySubtitle": "Submit a prompt to see images, model info, and downloads here."
+ },
+ "job": {
+ "favoriteBadge": "Favorited",
+ "reference": "Reference: ",
+ "result": "Result"
+ },
+ "notice": {
+ "success": "Generated {count} images.",
+ "reuse": "Parameters restored to the create panel.",
+ "copy": "Prompt copied.",
+ "clear": "Cleared current results."
+ },
+ "error": {
+ "promptRequired": "Please enter a prompt.",
+ "imageRequired": "Edit mode requires a reference image.",
+ "requestFailed": "Request failed. Please try again.",
+ "generateFailed": "Generation failed. Please try again.",
+ "copyFailed": "Copy failed. Please check clipboard permissions.",
+ "fileReadFailed": "Failed to read file."
+ },
+ "preset": {
+ "items": [
+ "Cinematic, volumetric lighting, ultra-detailed, realistic materials",
+ "Minimalist poster design, clean whitespace, modern typography",
+ "Cyberpunk night scene, neon reflections, rainy streets, wide-angle lens",
+ "High-end product render, studio lighting, clean background",
+ "Japanese illustration, soft light and shadow, delicate brushwork, strong atmosphere",
+ "Preserve the subject structure, only change colors, outfit, and background style"
+ ]
+ },
+ "sample": {
+ "prompt": "A ragdoll cat wearing a transparent space helmet, standing on a neon rooftop, cinematic lighting, ultra-detailed"
  }
 }

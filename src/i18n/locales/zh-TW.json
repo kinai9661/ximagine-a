@@ -4,7 +4,109 @@
  "zhTW": "繁體中文",
  "enUS": "English"
  },
+ "badge": {
+ "cloudflare": "Cloudflare Ready"
+ },
  "app": {
- "title": "Grok Draw Studio"
+ "title": "Grok Draw Studio",
+ "subtitle": "面向 Grok-Imagine 與 OpenAI兼容圖片介面的繪圖工作台，支援文生圖、參考圖編輯、結果放大預覽與任務復用。"
+ },
+ "hero": {
+ "models": "內建模型",
+ "jobs": "目前任務記錄",
+ "favorites": "收藏作品"
+ },
+ "models": {
+ "grokImagine": {
+ "description": "標準繪圖模式，適合多數高品質生成場景。"
+ },
+ "grokImagineEdit": {
+ "description": "參考圖編輯模式，上傳原圖後可進行重繪或局部改造。"
+ },
+ "grokImagineFast": {
+ "description": "快速出圖模式，適合高頻迭代與靈感草圖。"
+ }
+ },
+ "panel": {
+ "create": "創作面板",
+ "modeEdit": "參考圖編輯",
+ "modeText": "文本生成"
+ },
+ "field": {
+ "model": "模型",
+ "prompt": "提示詞",
+ "promptPlaceholder": "描述你想生成或編輯的畫面內容、風格、鏡頭、材質和氛圍",
+ "ratio": "畫幅比例",
+ "count": "生成數量",
+ "uploadRequired": "上傳參考圖",
+ "uploadOptional": "可選上傳",
+ "uploadHintEdit": "編輯模式必須提供原圖，支援 PNG / JPG / WebP。",
+ "uploadHintText": "切換到編輯模型後會使用這裡的參考圖。",
+ "currentFile": "目前檔案：",
+ "uploadPlaceholder": "拖拽或點擊上傳"
+ },
+ "actions": {
+ "clearImage": "清除參考圖",
+ "submitting": "正在生成...",
+ "submitEdit": "開始編輯圖片",
+ "submitText": "開始生成圖片",
+ "reuse": "復用參數",
+ "copyPrompt": "複製提示詞",
+ "favorite": "收藏結果",
+ "unfavorite": "取消收藏",
+ "clearJobs": "清空記錄",
+ "download": "下載",
+ "preview": "預覽",
+ "close": "關閉"
+ },
+ "tips": {
+ "title": "提示建議",
+ "subtitle": "更具體的描述通常能帶來更穩定的出圖結果。",
+ "items": [
+ "主體 + 場景 +風格 + 燈光 + 鏡頭語言，效果最穩定。",
+ "Fast 模型適合快速草圖，Edit 模型適合二次創作。",
+ "OpenAI 圖片介面更適合標準 data[].url / b64_json 回傳。",
+ "點擊結果圖可放大預覽，卡片支援收藏、複製提示詞、復用任務。"
+ ],
+ "currentModel": "目前模型"
+ },
+ "gallery": {
+ "badge": "創作記錄",
+ "title": "結果畫廊",
+ "summary": "已生成 {count} 張圖片",
+ "emptyTitle": "還沒有生成結果",
+ "emptySubtitle": "填寫提示詞並點擊生成後，這裡會展示圖片、模型資訊與下載入口。"
+ },
+ "job": {
+ "favoriteBadge": "已收藏",
+ "reference": "參考圖：",
+ "result": "結果"
+ },
+ "notice": {
+ "success": "已完成 {count} 張圖片生成。",
+ "reuse": "已將該任務參數填回創作面板。",
+ "copy": "提示詞已複製。",
+ "clear": "已清空目前結果記錄。"
+ },
+ "error": {
+ "promptRequired": "請輸入提示詞。",
+ "imageRequired": "編輯模式需要先上傳參考圖。",
+ "requestFailed": "請求失敗，請稍後重試。",
+ "generateFailed": "生成失敗，請稍後重試。",
+ "copyFailed": "複製失敗，請檢查瀏覽器剪貼簿權限。",
+ "fileReadFailed": "檔案讀取失敗。"
+ },
+ "preset": {
+ "items": [
+ "電影感，體積光，超高細節，真實材質",
+ "極簡海報設計，乾淨留白，現代排版感",
+ "賽博龐克夜景，霓虹反射，雨夜街頭，廣角鏡頭",
+ "高端產品渲染，工作室打光，純淨背景",
+ "日系插畫，柔和光影，細膩筆觸，氛圍感強",
+ "保留主體結構，只修改配色、服裝與背景風格"
+ ]
+ },
+ "sample": {
+ "prompt": "一隻戴著透明太空頭盔的布偶貓，站在霓虹城市屋頂，電影感燈光，超高細節"
  }
 }

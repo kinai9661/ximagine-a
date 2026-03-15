@@ -1,6 +1,7 @@
 interface Env {
-  GROK_API_URL?: string;
-  GROK_API_KEY?: string;
+ GROK_API_URL?: string;
+ GROK_API_KEY?: string;
+ API_AUTH_KEY?: string;
 }
 
 type CompatibilityMode = 'auto' | 'chat-completions' | 'openai-images';
@@ -22,14 +23,19 @@ const JSON_HEADERS = {
   'Content-Type': 'application/json; charset=utf-8',
   'Cache-Control': 'no-store',
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 export const onRequestOptions = async () => new Response(null, { status: 204, headers: JSON_HEADERS });
 
 export const onRequestPost = async ({ request, env }: { request: Request; env: Env }) => {
-  try {
+ const authError = verifyAuth(request, env);
+ if (authError) {
+ return authError;
+ }
+
+ try {
     const body = (await request.json()) as GrokPayload;
     const model = body.model?.trim();
     const prompt = body.prompt?.trim();
@@ -128,6 +134,24 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     );
   }
 };
+
+function verifyAuth(request: Request, env: Env) {
+const authHeader = request.headers.get('Authorization') || '';
+const match = authHeader.match(/Bearer\s+(.+)/i);
+const token = match?.[1]?.trim();
+
+if (!env.API_AUTH_KEY || !token || token !== env.API_AUTH_KEY) {
+return jsonResponse(
+{
+error: 'Unauthorized',
+code: 'invalid_api_key',
+},
+401,
+);
+}
+
+return null;
+}
 
 async function sendChatCompletionsRequest({
   apiUrl,

@@ -55,6 +55,10 @@ export function createTranslator(locale: Locale) {
  return current;
  }
 
+ if (Array.isArray(current)) {
+ return JSON.stringify(current);
+ }
+
  return fallback ?? path;
  };
 }
