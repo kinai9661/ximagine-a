@@ -17,14 +17,14 @@ export default {
  if (url.pathname.startsWith('/v1/')) {
  return withAuth(request, env, () => onOpenAiRequest({ request, env }));
  }
-
+ 
  if (url.pathname === '/api/grok') {
  if (request.method === 'OPTIONS') {
  return onRequestOptions();
  }
 
  if (request.method === 'POST') {
- return withAuth(request, env, () => onRequestPost({ request, env }));
+ return onRequestPost({ request, env });
  }
 
  return new Response('Method Not Allowed', {

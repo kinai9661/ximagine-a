@@ -30,11 +30,6 @@ const JSON_HEADERS = {
 export const onRequestOptions = async () => new Response(null, { status: 204, headers: JSON_HEADERS });
 
 export const onRequestPost = async ({ request, env }: { request: Request; env: Env }) => {
- const authError = verifyAuth(request, env);
- if (authError) {
- return authError;
- }
-
  try {
     const body = (await request.json()) as GrokPayload;
     const model = body.model?.trim();
@@ -135,23 +130,6 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   }
 };
 
-function verifyAuth(request: Request, env: Env) {
-const authHeader = request.headers.get('Authorization') || '';
-const match = authHeader.match(/Bearer\s+(.+)/i);
-const token = match?.[1]?.trim();
-
-if (!env.API_AUTH_KEY || !token || token !== env.API_AUTH_KEY) {
-return jsonResponse(
-{
-error: 'Unauthorized',
-code: 'invalid_api_key',
-},
-401,
-);
-}
-
-return null;
-}
 
 async function sendChatCompletionsRequest({
   apiUrl,
