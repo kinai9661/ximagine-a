@@ -7,9 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "cf:dev": "npm run build && wrangler pages dev dist --compatibility-date 2026-03-15",
-    "cf:deploy": "npm run build && wrangler pages deploy dist --project-name grok-draw-webapp"
+    "cf:dev": "npm run build && wrangler dev",
+    "cf:deploy": "npm run build && wrangler deploy"
   },
+
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
