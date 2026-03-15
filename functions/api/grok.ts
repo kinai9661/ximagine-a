@@ -36,7 +36,8 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     const aspectRatio = body.aspectRatio?.trim() || '1:1';
     const count = clampCount(body.count ?? 1);
     const imageDataUrl = body.imageDataUrl?.trim();
-    const isEditModel = model?.toLowerCase().includes('edit');
+    const isEditModel = Boolean(model?.toLowerCase().includes('edit'));
+
     const apiUrl = body.apiUrl?.trim() || env.GROK_API_URL || DEFAULT_API_URL;
     const apiKey = body.apiKey?.trim() || env.GROK_API_KEY || DEFAULT_API_KEY;
     const compatibility = resolveCompatibility(body.compatibility, apiUrl);
@@ -80,12 +81,12 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
           });
 
     const rawText = await upstreamResponse.text();
-    const rawJson = safeJsonParse(rawText);
+    const parsedPayload = parseProviderPayload(rawText);
 
     if (!upstreamResponse.ok) {
       return jsonResponse(
         {
-          error: extractErrorMessage(rawJson, rawText),
+          error: extractErrorMessage(parsedPayload, rawText),
           mode: compatibility,
           endpoint: normalizeApiUrl(apiUrl, compatibility, Boolean(isEditModel && imageDataUrl)),
         },
@@ -93,15 +94,17 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
       );
     }
 
-    const images = extractImages(rawJson);
+    const images = extractImages(parsedPayload);
+    const providerMessage = extractText(parsedPayload);
 
     if (!images.length) {
       return jsonResponse(
         {
           error: '接口调用成功，但未解析到图片结果。',
-          providerMessage: extractText(rawJson),
+          providerMessage,
           mode: compatibility,
           endpoint: normalizeApiUrl(apiUrl, compatibility, Boolean(isEditModel && imageDataUrl)),
+          raw: parsedPayload,
         },
         502,
       );
@@ -109,12 +112,13 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
 
     return jsonResponse({
       images,
-      providerMessage: extractText(rawJson),
-      usage: rawJson?.usage ?? null,
+      providerMessage,
+      usage: extractUsage(parsedPayload),
       mode: compatibility,
       endpoint: normalizeApiUrl(apiUrl, compatibility, Boolean(isEditModel && imageDataUrl)),
-      raw: rawJson,
+      raw: parsedPayload,
     });
+
   } catch (error) {
     return jsonResponse(
       {
@@ -340,7 +344,94 @@ function dataUrlToFile(dataUrl: string, fileName: string) {
   return new File([bytes], `${fileName}.${mimeType.split('/')[1] || 'png'}`, { type: mimeType });
 }
 
+function parseProviderPayload(rawText: string) {
+  const directJson = safeJsonParse(rawText);
+
+  if (directJson) {
+    return directJson;
+  }
+
+  const sseEvents = parseSsePayload(rawText);
+
+  if (sseEvents.length) {
+    return {
+      object: 'sse_payload',
+      events: sseEvents,
+      choices: sseEvents.flatMap((event) => (Array.isArray(event?.choices) ? event.choices : [])),
+      data: sseEvents.flatMap((event) => (Array.isArray(event?.data) ? event.data : [])),
+      output: sseEvents.flatMap((event) => (Array.isArray(event?.output) ? event.output : [])),
+      usage: getLastUsage(sseEvents),
+      rawText,
+    };
+
+  }
+
+  return rawText;
+}
+
+function parseSsePayload(rawText: string) {
+  const events: any[] = [];
+  const chunks = rawText.split(/\r?\n\r?\n/);
+
+  for (const chunk of chunks) {
+    const dataLines = chunk
+      .split(/\r?\n/)
+      .filter((line) => line.startsWith('data:'))
+      .map((line) => line.replace(/^data:\s*/, '').trim())
+      .filter(Boolean);
+
+    if (!dataLines.length) {
+      continue;
+    }
+
+    const data = dataLines.join('\n');
+
+    if (data === '[DONE]') {
+      continue;
+    }
+
+    const parsed = safeJsonParse(data);
+
+    if (parsed) {
+      events.push(parsed);
+      continue;
+    }
+
+    events.push(data);
+  }
+
+  return events;
+}
+
+function extractUsage(payload: any) {
+  if (!payload) {
+    return null;
+  }
+
+  if (payload?.usage) {
+    return payload.usage;
+  }
+
+  if (Array.isArray(payload?.events)) {
+    return getLastUsage(payload.events);
+  }
+
+  return null;
+}
+
+function getLastUsage(events: any[]) {
+  for (let index = events.length - 1; index >= 0; index -= 1) {
+    if (events[index]?.usage) {
+      return events[index].usage;
+    }
+  }
+
+  return null;
+}
+
+
 function extractImages(payload: any): string[] {
+
   const results = new Set<string>();
 
   const addImage = (value?: string) => {
@@ -420,6 +511,10 @@ function extractImages(payload: any): string[] {
       visit(node.content);
     }
 
+    if (node.delta) {
+      visit(node.delta);
+    }
+
     if (typeof node.response === 'string' || Array.isArray(node.response) || typeof node.response === 'object') {
       visit(node.response);
     }
@@ -427,6 +522,7 @@ function extractImages(payload: any): string[] {
     if (Array.isArray(node.data)) {
       visit(node.data);
     }
+
 
     if (Array.isArray(node.images)) {
       visit(node.images);
@@ -491,9 +587,14 @@ function extractText(payload: any): string {
       visit(node.content);
     }
 
+    if (node.delta) {
+      visit(node.delta);
+    }
+
     if (Array.isArray(node.output)) {
       visit(node.output);
     }
+
 
     if (Array.isArray(node.choices)) {
       visit(node.choices);
