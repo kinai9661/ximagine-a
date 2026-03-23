@@ -17,8 +17,8 @@ interface GrokPayload {
   compatibility?: CompatibilityMode;
 }
 
-const DEFAULT_API_URL = 'https://mpp.pp.ua/v1/chat/completions';
-const DEFAULT_API_KEY = 'sk-uouOusVyI38S3LwEKkFdFS3wMZu0nxAH2yhz7AgL1SrqWgNp';
+const DEFAULT_API_URL = 'https://openai.good.hidns.vip/v1/images/generations';
+const DEFAULT_API_KEY = 'sk-B882bCwUweSeMRscoNwxZw4vxpjXmvWTLBxO5aXC7WAYhfwa';
 const JSON_HEADERS = {
   'Content-Type': 'application/json; charset=utf-8',
   'Cache-Control': 'no-store',

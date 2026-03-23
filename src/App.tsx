@@ -69,8 +69,8 @@ const MODEL_KEY_MAP: Record<string, string> = {
 const ASPECT_RATIOS = ['1:1', '4:5', '3:4', '16:9', '9:16', '21:9'];
 const RESULT_COUNTS = [1,2,3,4];
 const DEFAULT_SETTINGS: ApiSettings = {
- apiUrl: 'https://mpp.pp.ua/v1/chat/completions',
- apiKey: '',
+ apiUrl: 'https://openai.good.hidns.vip/v1/images/generations',
+ apiKey: 'sk-B882bCwUweSeMRscoNwxZw4vxpjXmvWTLBxO5aXC7WAYhfwa',
  compatibility: 'auto',
 };
 
