@@ -46,25 +46,13 @@ type TranslateFn = (key: string, fallback?: string) => string;
 const SETTINGS_STORAGE_KEY = 'grok-draw-settings';
 const MODELS: ModelOption[] = [
  {
- id: 'Grok-Imagine-1.0',
- label: 'Grok-Imagine-1.0',
- description: '标准绘图模式，适合多数高质量生成场景。',
- },
- {
- id: 'Grok-Imagine-1.0-Edit',
- label: 'Grok-Imagine-1.0-Edit',
- description: '参考图编辑模式，上传原图后可进行重绘或局部改造。',
- },
- {
- id: 'Grok-Imagine-1.0-Fast',
- label: 'Grok-Imagine-1.0-Fast',
- description: '快速出图模式，适合高频迭代与灵感草图。',
+ id: 'grok-4.1-fast',
+ label: 'grok-4.1-fast',
+ description: '高速出圖模型，適合快速迭代與日常生成。',
  },
 ];
 const MODEL_KEY_MAP: Record<string, string> = {
- 'Grok-Imagine-1.0': 'grokImagine',
- 'Grok-Imagine-1.0-Edit': 'grokImagineEdit',
- 'Grok-Imagine-1.0-Fast': 'grokImagineFast',
+ 'grok-4.1-fast': 'grokImagineFast',
 };
 const ASPECT_RATIOS = ['1:1', '4:5', '3:4', '16:9', '9:16', '21:9'];
 const RESULT_COUNTS = [1,2,3,4];
@@ -114,7 +102,7 @@ export default function App() {
  const [settings] = useState<ApiSettings>(() => readStorage<ApiSettings>(SETTINGS_STORAGE_KEY, DEFAULT_SETTINGS));
 
  const currentModel = useMemo(() => MODELS.find((item) => item.id === model) ?? MODELS[0], [model]);
- const modelKey = MODEL_KEY_MAP[model] || 'grokImagine';
+ const modelKey = MODEL_KEY_MAP[model] || 'grokImagineFast';
  const currentModelDescription = t(`models.${modelKey}.description`, currentModel.description);
  const languageOptions: { value: Locale; label: string }[] = [
  { value: 'zh-TW', label: t('language.zhTW', '繁體中文') },
